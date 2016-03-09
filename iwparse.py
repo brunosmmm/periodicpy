@@ -1,5 +1,5 @@
 import re
-from wifiinfo import WifiInfo
+from wifitools.wifiinfo import WifiInfo
 
 BSS_REGEX = re.compile(r"^BSS\s([0-9A-Fa-f:]+).*")
 SSID_REGEX = re.compile(r"\s*SSID:\s([a-zA-Z0-9_-]+).*")

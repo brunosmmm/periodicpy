@@ -1,7 +1,7 @@
 import subprocess
 import re
-from iwparse import IWListParser
-from wifiinfo import check_interface_up, IFaceError
+from wifitools.iwparse import IWListParser
+from wifitools.wifiinfo import check_interface_up, IFaceError
 
 interface = 'wlan0'
 
@@ -18,7 +18,8 @@ if __name__ == "__main__":
         raise #for now
 
     if iface_status == False:
-        print "inteface is down"
+        print "inteface is down, exiting"
+        exit(0)
     else:
         print "inteface is up"
 
