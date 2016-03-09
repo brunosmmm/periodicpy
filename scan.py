@@ -3,17 +3,15 @@ import re
 from wifitools.iwparse import IWListParser
 from wifitools.wifiinfo import check_interface_up, IFaceError
 
-interface = 'wlan0'
-
 class ScanError(Exception):
     pass
 
-if __name__ == "__main__":
+def scan_and_parse(interface_name):
 
     #check if interface is UP
     iface_status = None
     try:
-        iface_status = check_interface_up(interface)
+        iface_status = check_interface_up(interface_name)
     except IFaceError as err:
         raise #for now
 
@@ -23,7 +21,7 @@ if __name__ == "__main__":
     else:
         print "inteface is up"
 
-    scan_cmd = ['iw', 'dev', interface, 'scan']
+    scan_cmd = ['iw', 'dev', interface_name, 'scan']
 
     proc = subprocess.Popen(scan_cmd,stdout=subprocess.PIPE)
     out, err = proc.communicate()
