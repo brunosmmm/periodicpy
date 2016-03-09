@@ -1,7 +1,7 @@
 import subprocess
 import re
 
-IFACE_STATUS_REGEX = re.compile(r"^[0-9]+:\s([a-zA-Z0-9]+).+state\s((DOWN|UP)).*")
+IFACE_STATUS_REGEX = re.compile(r"^[0-9]+:\s([a-zA-Z0-9]+):\s<([A-Za-z,]+)>.+state\s((DOWN|UP)).*")
 
 class IFaceError(Exception):
     pass
@@ -20,20 +20,28 @@ def check_interface_up(interface_name):
     m = IFACE_STATUS_REGEX.match(out)
     if m != None:
         if m.group(1) == interface_name:
-            if m.group(2) == "DOWN":
-                return False
-            elif m.group(2) == "UP":
+            if m.group(3) == "DOWN":
+                pass
+            elif m.group(3) == "UP":
                 return True
+
+        #even if down, check the flags
+        flag_list = m.group(2).split(',')
+        if "UP" in flag_list:
+            return True
 
     raise IFaceError('Unknown error while getting interface state')
 
 def set_interface_up(interface_name):
 
     check_cmd = ['ip', 'link', 'set', interface_name, 'up']
-    proc = subprocess.Popen(check_cmd)
+    proc = subprocess.Popen(check_cmd, stdout=subprocess.PIPE)
+    out, err = proc.communicate()
 
     if proc.returncode != 0:
-        raise IFaceError('Could not set interface to UP state')
+        #raise only if some output was given
+        if len(out) > 0:
+            raise IFaceError('Could not set interface to UP state')
 
 class WifiInfo(object):
     """Store wi-fi information"""
