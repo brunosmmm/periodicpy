@@ -1,7 +1,9 @@
 import subprocess
 import re
 from wifitools.iwparse import IWListParser
-from wifitools.wifiinfo import check_interface_up, set_interface_up, IFaceError
+from wifitools.wifiinfo import check_interface_up, set_interface_up, IFaceError, WifiInfoEncoder
+import json
+import time
 
 class ScanError(Exception):
     pass
@@ -33,3 +35,12 @@ def scan_and_parse(interface_name, auto_up=False):
     iw_list = IWListParser.parse_text(out.split('\n'))
 
     return iw_list
+
+def scan_and_report():
+
+    while True:
+        scan_results = scan_and_parse('wlan0', True)
+        scan_json = open('/var/lib/periodicpi/wifi_scan.json', 'w')
+        scan_json.write(json.dumps(scan_results, cls=WifiInfoEncoder))
+        scan_json.close()
+        time.sleep(10)
