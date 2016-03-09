@@ -1,12 +1,12 @@
 import subprocess
 import re
 from wifitools.iwparse import IWListParser
-from wifitools.wifiinfo import check_interface_up, IFaceError
+from wifitools.wifiinfo import check_interface_up, set_interface_up, IFaceError
 
 class ScanError(Exception):
     pass
 
-def scan_and_parse(interface_name):
+def scan_and_parse(interface_name, auto_up=False):
 
     #check if interface is UP
     iface_status = None
@@ -16,10 +16,10 @@ def scan_and_parse(interface_name):
         raise #for now
 
     if iface_status == False:
-        print "inteface is down, exiting"
-        exit(0)
-    else:
-        print "inteface is up"
+        if auto_up == False:
+            return None
+        else:
+            set_interface_up(interface_name)
 
     scan_cmd = ['iw', 'dev', interface_name, 'scan']
 
@@ -32,4 +32,4 @@ def scan_and_parse(interface_name):
     #parse
     iw_list = IWListParser.parse_text(out.split('\n'))
 
-    print iw_list
+    return iw_list
