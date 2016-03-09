@@ -1,7 +1,7 @@
 import subprocess
 import re
 
-IFACE_STATUS_REGEX = re.compile(r"^[0-9]+:\s([a-zA-Z0-9]+):\s<([A-Za-z,_]+)>.+state\s((DOWN|UP)).*")
+IFACE_STATUS_REGEX = re.compile(r"^[0-9]+:\s([a-zA-Z0-9]+):\s<([A-Za-z,-_]+)>.+state\s((DOWN|UP)).*")
 
 class IFaceError(Exception):
     pass
