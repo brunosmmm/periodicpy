@@ -27,6 +27,13 @@ def check_interface_up(interface_name):
 
     raise IFaceError('Unknown error while getting interface state')
 
+def set_interface_up(interface_name):
+
+    check_cmd = ['ip', 'link', 'set', interface_name, 'up']
+    proc = subprocess.Popen(check_cmd)
+
+    if proc.returncode != 0:
+        raise IFaceError('Could not set interface to UP state')
 
 class WifiInfo(object):
     """Store wi-fi information"""
