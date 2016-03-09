@@ -29,6 +29,8 @@ def check_interface_up(interface_name):
         flag_list = m.group(2).split(',')
         if "UP" in flag_list:
             return True
+        else:
+            return False
 
     raise IFaceError('Unknown error while getting interface state')
 
