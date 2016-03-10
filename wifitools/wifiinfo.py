@@ -75,7 +75,7 @@ class WifiInfo(object):
             self.has_key = False
 
     def __repr__(self):
-        return "[{}] ({})".format(self.BSS, self.SSID)
+        return "[{}] ({}): {} dBm".format(self.BSS, self.SSID, self.current_signal)
 
 class WifiInfoEncoder(JSONEncoder):
     def default(self, o):
