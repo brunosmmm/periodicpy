@@ -63,9 +63,9 @@ class WifiInfo(object):
     def set_key(self, has_key):
         if has_key == True or has_key == False:
             self.has_key = has_key
-        elif has_key == "yes":
+        elif has_key == "on":
             self.has_key = True
-        elif has_key == "no":
+        elif has_key == "off":
             self.has_key = False
 
     def __repr__(self):

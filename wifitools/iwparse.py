@@ -4,7 +4,7 @@ from periodicpy.wifitools.wifiinfo import WifiInfo
 BSS_REGEX = re.compile(r"^BSS\s([0-9A-Fa-f:]+).*")
 SSID_REGEX = re.compile(r"\s*SSID:\s([a-zA-Z0-9_-]+).*")
 SIGNAL_REGEX = re.compile(r"\s*signal:\s(-?[0-9]+\.[0-9]+)\sdBm.*")
-KEY_REGEX = re.compile(r"\s*Encription\skey:\s*((yes|no)).*")
+KEY_REGEX = re.compile(r"\s*WPA:\s*\*.*")#re.compile(r"\s*Encryption\skey:\s*((on|off)).*")
 
 class IWListParser(object):
 
@@ -37,7 +37,7 @@ class IWListParser(object):
 
             m = KEY_REGEX.match(line)
             if m != None:
-                current_object.set_key(m.group(1))
+                current_object.set_key(True)
                 continue
 
         return wifi_list
