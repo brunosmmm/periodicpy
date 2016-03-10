@@ -1,6 +1,6 @@
 import subprocess
 import re
-from json import JSONEncoder
+from json import JSONEncoder, JSONDecoder
 
 IFACE_STATUS_REGEX = re.compile(r"^[0-9]+:\s([a-zA-Z0-9]+):\s<([A-Za-z,-_]+)>.+state\s((DOWN|UP)).*")
 
@@ -74,3 +74,15 @@ class WifiInfo(object):
 class WifiInfoEncoder(JSONEncoder):
     def default(self, o):
         return o.__dict__
+
+class WifiInfoDecoder(JSONDecoder):
+    def __init__(self):
+        super(WifiInfoDecoder, self).__init__(self, object_hook=self.dict_to_object)
+
+    def dict_to_object(self, d):
+        ret = WifiInfo(d['BSS'])
+        ret.current_signal = d['current_signal']
+        ret.has_key = d['has_key']
+        ret.SSID = d['SSID']
+
+        return ret
