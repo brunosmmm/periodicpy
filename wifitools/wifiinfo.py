@@ -54,6 +54,12 @@ class WifiInfo(object):
         self.current_signal = None
         self.has_key = False
 
+    @staticmethod
+    def from_dict(d):
+        ret = WifiInfo(None)
+        ret.__dict__ = d
+        return ret
+
     def set_ssid(self, ssid):
         self.SSID = ssid
 
