@@ -1,7 +1,7 @@
 import subprocess
 import re
-from wifitools.iwparse import IWListParser
-from wifitools.wifiinfo import check_interface_up, set_interface_up, IFaceError, WifiInfoEncoder
+from periodicpy.wifitools.iwparse import IWListParser
+from periodicpy.wifitools.wifiinfo import check_interface_up, set_interface_up, IFaceError, WifiInfoEncoder
 import json
 import time
 
