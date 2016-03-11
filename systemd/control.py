@@ -12,11 +12,14 @@ class ServiceStatus(object):
 class ServiceNotFoundError(Exception):
     pass
 
+class ServiceStartstopError(Exception):
+    pass
+
 def check_service_status(service_name):
 
     check_cmd = ['systemctl', 'status', service_name]
 
-    proc = subprocess.Popen(check_cmd, stdout=subprocess.PIPE)
+    proc = subprocess.Popen(check_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     out, err = proc.communicate()
 
     if proc.returncode != 0:
@@ -44,3 +47,22 @@ def check_service_status(service_name):
         
     else:
         return ServiceStatus.RUNNING
+
+def _do_service_action(service_name, action):
+
+    start_cmd = ['systemctl', action, service_name]
+
+    proc = subprocess.Popen(start_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    out, err = proc.communicate()
+
+    return proc.returncode
+
+def start_service(service_name):
+
+    if _do_service_action(service_name, 'start') != 0:
+        raise ServiceStartstopError('failed to start service')
+
+def stop_service(service_name):
+
+    if _do_service_action(service_name, 'stop') != 0:
+        raise ServiceStartstopError('failed to stop service')
