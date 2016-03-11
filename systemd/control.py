@@ -66,3 +66,13 @@ def stop_service(service_name):
 
     if _do_service_action(service_name, 'stop') != 0:
         raise ServiceStartstopError('failed to stop service')
+
+def enable_service(service_name):
+
+    if _do_service_action(service_name, 'enable') != 0:
+        raise ServiceStartstopError('failed to enable service')
+
+def disable_service(service_name):
+
+    if _do_service_action(service_name, 'disable') != 0:
+        raise ServiceStartstopError('failed to disable service')
