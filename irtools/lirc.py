@@ -11,8 +11,9 @@ LIRC_COMMANDS = ['VERSION', 'SEND_ONCE', 'SEND_START', 'SEND_STOP', 'LIST',
                  'SET_INPUTLOG', 'DRV_OPTION', 'SIMULATE', 'SET_TRANSMITTERS']
 
 class LircClient(object):
-    def __init__(self, address):
+    def __init__(self, address, port):
         self.srv_addr = address
+        self.srv_port = port
 
         #self.sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
 
@@ -78,7 +79,7 @@ class LircClient(object):
 
     def _send_command(self, command, has_response=False):
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.sock.connect((self.srv_addr, 6000))
+        self.sock.connect((self.srv_addr, self.srv_port))
         self.sock.send(command+'\n')
 
         response = self._receive_lirc_packet(has_response)
