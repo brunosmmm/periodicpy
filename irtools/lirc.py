@@ -98,11 +98,11 @@ class LircClient(object):
         return [RemoteKey(code=int(x.split(' ')[0], 16),
                           key_name=x.split(' ')[1]) for x in key_list]
 
-    def send_key_once(self, remote, key_name):
-        self._send_command(' '.join(['SEND_ONCE', remote, key_name]))
+    def send_key_once(self, remote, key_name, repeat=0):
+        self._send_command(' '.join(['SEND_ONCE', remote, key_name, str(repeat)]))
 
-    def start_send_key(self, remote, key_name, repeat_count=0):
-        self._send_command(' '.join(['SEND_START', remote, key_name, repeat_count]))
+    def start_send_key(self, remote, key_name):
+        self._send_command(' '.join(['SEND_START', remote, key_name]))
 
     def stop_send_key(self, remote, key_name):
         self._send_command(' '.join(['SEND_STOP', remote, key_name]))
