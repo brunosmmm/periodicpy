@@ -16,7 +16,7 @@ class ZeroconfService(object):
         self.port = port
         self.text = text
 
-    def publish(self):
+    def publish(self, ipv4_only=True):
         bus = dbus.SystemBus()
         server = dbus.Interface(
                          bus.get_object(
@@ -29,7 +29,12 @@ class ZeroconfService(object):
                                    server.EntryGroupNew()),
                     avahi.DBUS_INTERFACE_ENTRY_GROUP)
 
-        g.AddService(avahi.IF_UNSPEC, avahi.PROTO_UNSPEC,dbus.UInt32(0),
+        if ipv4_only:
+            proto = avahi.PROTO_INET
+        else:
+            proto = avahi.PROTO_UNSPEC
+
+        g.AddService(avahi.IF_UNSPEC, proto ,dbus.UInt32(0),
                      self.name, self.stype, self.domain, self.host,
                      dbus.UInt16(self.port), self.text)
 
